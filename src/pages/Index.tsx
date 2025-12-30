@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
+import { Link } from 'react-router-dom';
 
 const categories = [
   'Электроника', 'Текстиль', 'Продукты питания', 'Строительные материалы',
@@ -77,15 +78,14 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50">
       <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2">
             <Icon name="Package" size={32} className="text-primary" />
             <h1 className="text-2xl font-bold text-primary">Поставщик.ру</h1>
-          </div>
+          </Link>
           <nav className="hidden md:flex items-center gap-6">
-            <a href="#catalog" className="text-sm font-medium hover:text-primary transition-colors">Каталог</a>
-            <a href="#tenders" className="text-sm font-medium hover:text-primary transition-colors">Тендеры</a>
+            <Link to="/catalog" className="text-sm font-medium hover:text-primary transition-colors">Каталог</Link>
+            <Link to="/tenders" className="text-sm font-medium hover:text-primary transition-colors">Тендеры</Link>
             <a href="#tools" className="text-sm font-medium hover:text-primary transition-colors">Инструменты</a>
-            <a href="#international" className="text-sm font-medium hover:text-primary transition-colors">Международный</a>
           </nav>
           <div className="flex items-center gap-3">
             <Button variant="outline" size="sm">Вход</Button>
@@ -149,18 +149,11 @@ const Index = () => {
       </section>
 
       <section id="catalog" className="container mx-auto px-4 py-16">
-        <h3 className="text-3xl font-bold mb-8">Каталог поставщиков</h3>
-        <div className="mb-6 flex gap-4 flex-wrap">
-          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-            <SelectTrigger className="w-64">
-              <SelectValue placeholder="Выберите категорию" />
-            </SelectTrigger>
-            <SelectContent>
-              {categories.map(cat => (
-                <SelectItem key={cat} value={cat}>{cat}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+        <div className="flex items-center justify-between mb-8">
+          <h3 className="text-3xl font-bold">Популярные поставщики</h3>
+          <Link to="/catalog">
+            <Button variant="outline">Смотреть все</Button>
+          </Link>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {suppliers.map(supplier => (
