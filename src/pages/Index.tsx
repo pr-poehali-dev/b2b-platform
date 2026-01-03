@@ -9,11 +9,26 @@ import Icon from '@/components/ui/icon';
 import { Link } from 'react-router-dom';
 
 const categories = [
-  'Электроника', 'Текстиль', 'Продукты питания', 'Строительные материалы',
-  'Автозапчасти', 'Медицинское оборудование', 'Мебель', 'Химическая продукция',
-  'Упаковка', 'Металлопрокат', 'Пластик', 'Инструменты',
-  'Бытовая техника', 'Косметика', 'Одежда', 'Обувь',
-  'Игрушки', 'Спортивные товары', 'Канцелярия', 'Освещение'
+  { name: 'Электроника', emoji: '📱' },
+  { name: 'Текстиль', emoji: '🧵' },
+  { name: 'Продукты питания', emoji: '🍎' },
+  { name: 'Строительные материалы', emoji: '🏗️' },
+  { name: 'Автозапчасти', emoji: '🚗' },
+  { name: 'Медицинское оборудование', emoji: '⚕️' },
+  { name: 'Мебель', emoji: '🪑' },
+  { name: 'Химическая продукция', emoji: '🧪' },
+  { name: 'Упаковка', emoji: '📦' },
+  { name: 'Металлопрокат', emoji: '⚙️' },
+  { name: 'Пластик', emoji: '♻️' },
+  { name: 'Инструменты', emoji: '🔧' },
+  { name: 'Бытовая техника', emoji: '🔌' },
+  { name: 'Косметика', emoji: '💄' },
+  { name: 'Одежда', emoji: '👕' },
+  { name: 'Обувь', emoji: '👟' },
+  { name: 'Игрушки', emoji: '🧸' },
+  { name: 'Спортивные товары', emoji: '⚽' },
+  { name: 'Канцелярия', emoji: '✏️' },
+  { name: 'Освещение', emoji: '💡' }
 ];
 
 const suppliers = [
@@ -117,34 +132,20 @@ const Index = () => {
       </section>
 
       <section className="container mx-auto px-4 py-12">
-        <div className="grid md:grid-cols-3 gap-6">
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
-                <Icon name="ShieldCheck" size={24} className="text-primary" />
-              </div>
-              <CardTitle>15 000+ поставщиков</CardTitle>
-              <CardDescription>Все компании проверены и верифицированы</CardDescription>
-            </CardHeader>
-          </Card>
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
-                <Icon name="Globe" size={24} className="text-primary" />
-              </div>
-              <CardTitle>60+ стран</CardTitle>
-              <CardDescription>Поставщики из СНГ, Азии, Европы и США</CardDescription>
-            </CardHeader>
-          </Card>
-          <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
-                <Icon name="TrendingDown" size={24} className="text-primary" />
-              </div>
-              <CardTitle>Экономия до 30%</CardTitle>
-              <CardDescription>Прямые контракты без посредников</CardDescription>
-            </CardHeader>
-          </Card>
+        <div className="mb-8">
+          <h3 className="text-3xl font-bold mb-6">Категории товаров</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {categories.map(category => (
+              <Link key={category.name} to="/catalog">
+                <Card className="hover:shadow-lg hover:scale-105 transition-all cursor-pointer">
+                  <CardContent className="pt-6 pb-4 text-center">
+                    <div className="text-4xl mb-3">{category.emoji}</div>
+                    <p className="text-sm font-medium">{category.name}</p>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -189,7 +190,59 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="tools" className="bg-white py-16">
+      <section id="tenders" className="bg-white py-16">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between mb-8">
+            <h3 className="text-3xl font-bold">Активные тендеры</h3>
+            <Link to="/tenders">
+              <Button variant="outline">Смотреть все</Button>
+            </Link>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <Badge className="w-fit mb-2">Электроника</Badge>
+                <CardTitle className="text-lg">Поставка смартфонов для сети</CardTitle>
+                <CardDescription>Бюджет: 5 000 000 ₽</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">12 предложений</span>
+                  <span className="text-primary font-medium">До 15 января</span>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <Badge className="w-fit mb-2">Текстиль</Badge>
+                <CardTitle className="text-lg">Хлопковая ткань для производства</CardTitle>
+                <CardDescription>Бюджет: 2 500 000 ₽</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">8 предложений</span>
+                  <span className="text-primary font-medium">До 10 января</span>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <Badge className="w-fit mb-2">Стройматериалы</Badge>
+                <CardTitle className="text-lg">Материалы для торгового центра</CardTitle>
+                <CardDescription>Бюджет: 12 000 000 ₽</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">15 предложений</span>
+                  <span className="text-primary font-medium">До 20 января</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-gradient-to-br from-primary/5 to-cyan-50 py-16">
         <div className="container mx-auto px-4">
           <h3 className="text-3xl font-bold mb-8 text-center">Инструменты для международной торговли</h3>
           <Tabs defaultValue="logistics" className="max-w-4xl mx-auto">
