@@ -31,7 +31,7 @@ const allSuppliers = [
 
 const Catalog = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedCountry, setSelectedCountry] = useState('Все страны');
   const [minOrderRange, setMinOrderRange] = useState([10000]);
   const [verifiedOnly, setVerifiedOnly] = useState(false);
@@ -39,7 +39,7 @@ const Catalog = () => {
   const filteredSuppliers = allSuppliers.filter(supplier => {
     const matchesSearch = supplier.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          supplier.category.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = !selectedCategory || supplier.category === selectedCategory;
+    const matchesCategory = selectedCategory === 'all' || supplier.category === selectedCategory;
     const matchesCountry = selectedCountry === 'Все страны' || supplier.country === selectedCountry;
     const matchesMinOrder = supplier.minOrder <= minOrderRange[0];
     const matchesVerified = !verifiedOnly || supplier.verified;
@@ -87,7 +87,7 @@ const Catalog = () => {
                       <SelectValue placeholder="Все категории" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Все категории</SelectItem>
+                      <SelectItem value="all">Все категории</SelectItem>
                       {categories.map(cat => (
                         <SelectItem key={cat} value={cat}>{cat}</SelectItem>
                       ))}
@@ -140,7 +140,7 @@ const Catalog = () => {
                   variant="outline" 
                   className="w-full"
                   onClick={() => {
-                    setSelectedCategory('');
+                    setSelectedCategory('all');
                     setSelectedCountry('Все страны');
                     setMinOrderRange([10000]);
                     setVerifiedOnly(false);

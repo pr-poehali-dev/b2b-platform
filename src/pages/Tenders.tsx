@@ -54,7 +54,7 @@ const tenders = [
 
 const Tenders = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   
   const [formData, setFormData] = useState({
@@ -68,7 +68,7 @@ const Tenders = () => {
   const filteredTenders = tenders.filter(tender => {
     const matchesSearch = tender.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          tender.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = !selectedCategory || tender.category === selectedCategory;
+    const matchesCategory = selectedCategory === 'all' || tender.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -197,7 +197,7 @@ const Tenders = () => {
               <SelectValue placeholder="Все категории" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Все категории</SelectItem>
+              <SelectItem value="all">Все категории</SelectItem>
               <SelectItem value="Электроника">Электроника</SelectItem>
               <SelectItem value="Текстиль">Текстиль</SelectItem>
               <SelectItem value="Строительные материалы">Строительные материалы</SelectItem>
