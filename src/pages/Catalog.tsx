@@ -153,6 +153,11 @@ const Catalog = () => {
           </div>
 
           <div className="lg:col-span-3 space-y-6">
+            <div>
+              <h3 className="text-2xl font-bold mb-4">Популярные поставщики</h3>
+              <p className="text-muted-foreground mb-6">Самые надежные компании с высоким рейтингом</p>
+            </div>
+
             <div className="flex gap-3">
               <Input
                 placeholder="Поиск по названию или категории..."

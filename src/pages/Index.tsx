@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import Icon from '@/components/ui/icon';
 import { Link } from 'react-router-dom';
@@ -40,54 +38,6 @@ const suppliers = [
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
-  
-  const [logisticsWeight, setLogisticsWeight] = useState('');
-  const [logisticsDistance, setLogisticsDistance] = useState('');
-  const [logisticsCost, setLogisticsCost] = useState<number | null>(null);
-  
-  const [currencyAmount, setCurrencyAmount] = useState('');
-  const [fromCurrency, setFromCurrency] = useState('RUB');
-  const [toCurrency, setToCurrency] = useState('USD');
-  const [convertedAmount, setConvertedAmount] = useState<number | null>(null);
-  
-  const [docText, setDocText] = useState('');
-  const [docLang, setDocLang] = useState('en');
-  const [translatedText, setTranslatedText] = useState('');
-
-  const calculateLogistics = () => {
-    const weight = parseFloat(logisticsWeight);
-    const distance = parseFloat(logisticsDistance);
-    if (weight && distance) {
-      const cost = (weight * 50) + (distance * 30) + 5000;
-      setLogisticsCost(cost);
-    }
-  };
-
-  const convertCurrency = () => {
-    const amount = parseFloat(currencyAmount);
-    const rates: Record<string, number> = {
-      'RUB': 1,
-      'USD': 0.011,
-      'EUR': 0.010,
-      'CNY': 0.078,
-      'TRY': 0.35
-    };
-    if (amount && fromCurrency && toCurrency) {
-      const result = amount * (rates[toCurrency] / rates[fromCurrency]);
-      setConvertedAmount(result);
-    }
-  };
-
-  const translateDoc = () => {
-    const translations: Record<string, string> = {
-      'en': 'Translated to English: ' + docText,
-      'ru': 'Переведено на русский: ' + docText,
-      'zh': '翻译成中文：' + docText,
-      'tr': 'Türkçeye çevrildi: ' + docText
-    };
-    setTranslatedText(translations[docLang] || docText);
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50">
@@ -100,7 +50,7 @@ const Index = () => {
           <nav className="hidden md:flex items-center gap-6">
             <Link to="/catalog" className="text-sm font-medium hover:text-primary transition-colors">Каталог</Link>
             <Link to="/tenders" className="text-sm font-medium hover:text-primary transition-colors">Тендеры</Link>
-            <a href="#tools" className="text-sm font-medium hover:text-primary transition-colors">Инструменты</a>
+            <Link to="/tools" className="text-sm font-medium hover:text-primary transition-colors">Инструменты</Link>
           </nav>
           <div className="flex items-center gap-3">
             <Button variant="outline" size="sm">Вход</Button>
@@ -134,61 +84,24 @@ const Index = () => {
       <section className="container mx-auto px-4 py-12">
         <div className="mb-8">
           <h3 className="text-3xl font-bold mb-6">Категории товаров</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {categories.map(category => (
-              <Link key={category.name} to="/catalog">
-                <Card className="hover:shadow-lg hover:scale-105 transition-all cursor-pointer">
-                  <CardContent className="pt-6 pb-4 text-center">
-                    <div className="text-4xl mb-3">{category.emoji}</div>
-                    <p className="text-sm font-medium">{category.name}</p>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
+          <div className="overflow-x-auto pb-4">
+            <div className="flex gap-4 w-max">
+              {categories.map(category => (
+                <Link key={category.name} to="/catalog">
+                  <Card className="hover:shadow-lg hover:scale-105 transition-all cursor-pointer w-32">
+                    <CardContent className="pt-6 pb-4 text-center">
+                      <div className="text-4xl mb-3">{category.emoji}</div>
+                      <p className="text-xs font-medium">{category.name}</p>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      <section id="catalog" className="container mx-auto px-4 py-16">
-        <div className="flex items-center justify-between mb-8">
-          <h3 className="text-3xl font-bold">Популярные поставщики</h3>
-          <Link to="/catalog">
-            <Button variant="outline">Смотреть все</Button>
-          </Link>
-        </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {suppliers.map(supplier => (
-            <Card key={supplier.id} className="hover:shadow-lg transition-all hover:-translate-y-1">
-              <CardHeader>
-                <div className="flex items-start justify-between mb-2">
-                  <CardTitle className="text-lg">{supplier.name}</CardTitle>
-                  {supplier.verified && (
-                    <Badge variant="secondary" className="bg-primary/10 text-primary">
-                      <Icon name="BadgeCheck" size={14} />
-                    </Badge>
-                  )}
-                </div>
-                <CardDescription>{supplier.category}</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="flex items-center gap-2 text-sm">
-                  <Icon name="MapPin" size={16} className="text-muted-foreground" />
-                  <span>{supplier.country}</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <Icon name="Star" size={16} className="text-yellow-500" />
-                  <span className="font-medium">{supplier.rating}</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <Icon name="Package" size={16} className="text-muted-foreground" />
-                  <span>Мин. заказ: {supplier.minOrder}</span>
-                </div>
-                <Button className="w-full mt-4" size="sm">Связаться</Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
+
 
       <section id="tenders" className="bg-white py-16">
         <div className="container mx-auto px-4">
@@ -239,174 +152,6 @@ const Index = () => {
               </CardContent>
             </Card>
           </div>
-        </div>
-      </section>
-
-      <section className="bg-gradient-to-br from-primary/5 to-cyan-50 py-16">
-        <div className="container mx-auto px-4">
-          <h3 className="text-3xl font-bold mb-8 text-center">Инструменты для международной торговли</h3>
-          <Tabs defaultValue="logistics" className="max-w-4xl mx-auto">
-            <TabsList className="grid grid-cols-3 w-full">
-              <TabsTrigger value="logistics">
-                <Icon name="Truck" size={18} className="mr-2" />
-                Логистика
-              </TabsTrigger>
-              <TabsTrigger value="currency">
-                <Icon name="DollarSign" size={18} className="mr-2" />
-                Валюта
-              </TabsTrigger>
-              <TabsTrigger value="translator">
-                <Icon name="Languages" size={18} className="mr-2" />
-                Переводчик
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="logistics" className="mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Калькулятор логистики</CardTitle>
-                  <CardDescription>Рассчитайте стоимость доставки груза</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Вес груза (кг)</label>
-                    <Input
-                      type="number"
-                      placeholder="1000"
-                      value={logisticsWeight}
-                      onChange={(e) => setLogisticsWeight(e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Расстояние (км)</label>
-                    <Input
-                      type="number"
-                      placeholder="5000"
-                      value={logisticsDistance}
-                      onChange={(e) => setLogisticsDistance(e.target.value)}
-                    />
-                  </div>
-                  <Button onClick={calculateLogistics} className="w-full">
-                    Рассчитать стоимость
-                  </Button>
-                  {logisticsCost !== null && (
-                    <div className="p-4 bg-primary/10 rounded-lg">
-                      <p className="text-sm text-muted-foreground mb-1">Ориентировочная стоимость доставки:</p>
-                      <p className="text-2xl font-bold text-primary">
-                        {logisticsCost.toLocaleString('ru-RU')} ₽
-                      </p>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="currency" className="mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Конвертер валют</CardTitle>
-                  <CardDescription>Переведите сумму в нужную валюту</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Сумма</label>
-                    <Input
-                      type="number"
-                      placeholder="100000"
-                      value={currencyAmount}
-                      onChange={(e) => setCurrencyAmount(e.target.value)}
-                    />
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">Из</label>
-                      <Select value={fromCurrency} onValueChange={setFromCurrency}>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="RUB">RUB (₽)</SelectItem>
-                          <SelectItem value="USD">USD ($)</SelectItem>
-                          <SelectItem value="EUR">EUR (€)</SelectItem>
-                          <SelectItem value="CNY">CNY (¥)</SelectItem>
-                          <SelectItem value="TRY">TRY (₺)</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">В</label>
-                      <Select value={toCurrency} onValueChange={setToCurrency}>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="RUB">RUB (₽)</SelectItem>
-                          <SelectItem value="USD">USD ($)</SelectItem>
-                          <SelectItem value="EUR">EUR (€)</SelectItem>
-                          <SelectItem value="CNY">CNY (¥)</SelectItem>
-                          <SelectItem value="TRY">TRY (₺)</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                  <Button onClick={convertCurrency} className="w-full">
-                    Конвертировать
-                  </Button>
-                  {convertedAmount !== null && (
-                    <div className="p-4 bg-primary/10 rounded-lg">
-                      <p className="text-sm text-muted-foreground mb-1">Результат конвертации:</p>
-                      <p className="text-2xl font-bold text-primary">
-                        {convertedAmount.toFixed(2)} {toCurrency}
-                      </p>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="translator" className="mt-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Переводчик документов</CardTitle>
-                  <CardDescription>Перевод текста контрактов и документов</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Текст документа</label>
-                    <textarea
-                      className="w-full min-h-32 p-3 border rounded-md"
-                      placeholder="Введите текст для перевода..."
-                      value={docText}
-                      onChange={(e) => setDocText(e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Язык перевода</label>
-                    <Select value={docLang} onValueChange={setDocLang}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="en">Английский</SelectItem>
-                        <SelectItem value="ru">Русский</SelectItem>
-                        <SelectItem value="zh">Китайский</SelectItem>
-                        <SelectItem value="tr">Турецкий</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <Button onClick={translateDoc} className="w-full">
-                    Перевести
-                  </Button>
-                  {translatedText && (
-                    <div className="p-4 bg-primary/10 rounded-lg">
-                      <p className="text-sm text-muted-foreground mb-2">Результат перевода:</p>
-                      <p className="text-sm">{translatedText}</p>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
         </div>
       </section>
 
